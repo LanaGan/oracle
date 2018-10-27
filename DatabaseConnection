@@ -1,0 +1,21 @@
+在cmd中使用sqlplus连接数据库
+  1、连接本地数据库（要先启动监听和服务、否则连接不成功）：
+    11g版本为例：
+    a.输入命令 ：sqlPlus  回车
+    b.输入用户名 如：sys as SYSDBA 回车 （如果是sys或system账户连接数据库，需要在末尾加上as sysdba、使用sys账户登录时：密码可以随便输 如：1、123456） 
+    c.输入口令 如：Db123456 回车
+    出现 sqlPlus> 表示连接成功 
+    （也可以直接使用命令： sqlplus 用户名/密码 as sysdba （如：sqlplus sys/sys as sysdba）  直接登录）
+  2、远程连接服务器数据库
+    a.输入命令：sqlplus 用户名/密码@IP:端口/服务名 （如：sqlplus SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/ORCL）
+    出现 sqlPlus> 表示连接成功
+  
+使用plsql软件连接数据库；
+  1、先在plsql中tools > preferences > Connection 下设置 oracleHome/OCI library  点击apply；
+  2、对应版本的oracle中或oracle客户端中的 tnsnames.ora文件中添加要连接的服务。  (D:\app\zhanghongsen\product\11.2.0\dbhome_1\NETWORK\ADMIN)
+  3、先把tnsnames.ora文件配置好直接登录plsql;
+  
+在cmd中导出dmp文件；
+  使用命令：exp 用户名/密码@IP:端口/服务名（如：exp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/ORCL） file=d:\daochu.dmp full=y(导出所有表)  owner=用户名（导出指定用户表）
+在cmd中导入dmp文件
+  使用命令：imp 用户名/密码@IP:端口/服务名 （如：imp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/ORCL）file=C:\daochu.dmp 
