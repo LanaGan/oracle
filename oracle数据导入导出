@@ -1,4 +1,11 @@
+在cmd中导出dmp文件；
+  使用命令：exp 用户名/密码@IP:端口/服务名（如：exp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/ORCL） file=d:\daochu.dmp full=y(导出所有表)  owner=用户名（导出指定用户表）
+在cmd中导入dmp文件
+  使用命令：imp 用户名/密码@IP:端口/服务名 （如：imp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/ORCL）file=C:\daochu.dmp 
+
 导出指定表
-exp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/orcl file=f:\typical.dmp tables=(SHWZ_TYPICAL_INVENTORY_SPEC,SHWZ_TYPICAL_INVENTORY,SHWZ_TYPICAL_INVENTORY_MODEL);
+  exp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/orcl file=f:\typical.dmp tables=(SHWZ_TYPICAL_INVENTORY_SPEC,SHWZ_TYPICAL_INVENTORY,SHWZ_TYPICAL_INVENTORY_MODEL);
 导入（DATA_ONLY仅导入数据）
-imp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/orcl file = f:\typical.dmp log = f:\imp_base.log full=y   DATA_ONLY=Y
+  imp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/orcl file = f:\typical.dmp log = f:\imp_base.log full=y   DATA_ONLY=Y
+
+
