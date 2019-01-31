@@ -1,0 +1,76 @@
+create or replace trigger wzjh_standard_state_change  
+after update of state
+on wzjh_standard_catalog
+for each row  
+  DECLARE
+    -- 定义变量
+    mainId WZJH_STANDARD_CATALOG.Id%type; --物料主数据Id
+    materialName WZJH_STANDARD_CATALOG.Material_Desc%type; --物料名称
+    materialCode WZJH_STANDARD_CATALOG.Material_Code%type; --物料编码
+    newstate WZJH_STANDARD_CATALOG.State%type; -- 新状态
+    mateType WZJH_STANDARD_CATALOG.Mater_Type%type;--物料类型
+    title varchar(500); --消息标题
+    messageId VARCHAR2(40); --消息id
+    messageType varchar(20); --消息类型；
+    dongJieType varchar(20);
+    messageCount number;
+    
+    PRAGMA AUTONOMOUS_TRANSACTION; -- 不设置自动提交事务会有问题
+ begin
+    mainId := :old.id;
+    newstate := :new.state;  --新状态
+    -- 判断新值是否与旧值不一样
+    if newstate != :old.state then 
+    -- 查询主数据物料编码物料名称   
+      SELECT material_code INTO materialCode FROM WZJH_STANDARD_CATALOG  WHERE id = mainId;
+      SELECT material_desc INTO materialName FROM WZJH_STANDARD_CATALOG  WHERE id = mainId;
+      SELECT mater_Type INTO mateType FROM WZJH_STANDARD_CATALOG  WHERE id = mainId;
+      -- 判断冻结类型
+      if mateType = '主物料' then
+         dongJieType := '国网';
+      elsif mateType = '扩展' then
+         dongJieType := '江苏';
+      else
+         dongJieType := '';
+      end if;
+      
+      
+      --消息类型和内容
+      if newstate = '冻结' then
+         messageType := '物料冻结';
+         title := '物料"'||materialName||'"已'||dongJieType||'冻结，请注意！';
+      else 
+         messageType := '物料消冻';
+         title := '物料"'||materialName||'"已取消'||dongJieType||'冻结，请注意！';
+      end if;
+      
+      --查询物料计划创建人 循环插入message
+      for receiver  in  (select distinct t.create_user as createUserId from WZJH_MATERIAL_TECH t where t.material_code = materialCode and t.cga_code is null)
+        loop
+         
+          -- 更新之前的消息 
+          if messageType = '物料冻结' then
+             update bw_message_info t2 set  t2.delete_flag = 1 where t2.message_type = '物料消冻' and t2.main_id = mainId;
+          else
+             update bw_message_info t2 set  t2.delete_flag = 1 where t2.message_type = '物料冻结' and t2.main_id = mainId;
+          end if;
+          
+          -- 查询是否还有消息提醒
+          select count(*) into messageCount from bw_message_info where message_type = messageType and main_id = mainId and delete_flag = 0;
+          -- 没有消息就发送
+          if  messageCount < 1  then
+            
+              -- 创建messageid
+              select sys_guid() into messageId from dual ;
+               
+              -- 插入消息数据表
+              insert into bw_message_info(id, MAIN_ID, TITLE, MESSAGE_CONTENT, MAIN_TYPE, MESSAGE_TYPE, CREATE_TIME, DELETE_FLAG) 
+              values(messageId, mainId, title, title, 2, messageType, sysdate, 0);
+              
+              -- 插入消息关联表
+              insert into bw_message_relation(receiver_id, message_id) values (receiver.createUserId ,messageId);
+          end if;
+        end loop;
+    commit; -- 自动提交
+    end if;
+ end;
