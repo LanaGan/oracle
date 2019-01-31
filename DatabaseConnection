@@ -15,7 +15,3 @@
   2、对应版本的oracle中或oracle客户端中的 tnsnames.ora文件中添加要连接的服务。  (D:\app\zhanghongsen\product\11.2.0\dbhome_1\NETWORK\ADMIN)
   3、先把tnsnames.ora文件配置好直接登录plsql;
   
-在cmd中导出dmp文件；
-  使用命令：exp 用户名/密码@IP:端口/服务名（如：exp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/ORCL） file=d:\daochu.dmp full=y(导出所有表)  owner=用户名（导出指定用户表）
-在cmd中导入dmp文件
-  使用命令：imp 用户名/密码@IP:端口/服务名 （如：imp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/ORCL）file=C:\daochu.dmp 
