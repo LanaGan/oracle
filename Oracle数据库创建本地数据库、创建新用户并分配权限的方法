@@ -1,0 +1,40 @@
+前提：安装好oracle数据库客户端; PL/SQL DEVELOPER
+一、oracle可以通过创建本地数据库：	
+	1. 打开DatabaseConfiguration Assistant，按照提示进行安装，并记住设置的密码。(创建本地数据库)
+		(1)选择创建数据库;
+		(2)选择一般用途;
+		(3)填写自己的数据库名;
+		(4)填写口令，选择同一口令吧，当然也可以为每个用户填写不同的口令(要记住设置的密码);
+		(5) 以后基本上默认安装。安装完成后退出即可。
+	2. 打开net manage进行数据库服务配置：(配置数据库服务连接信息)
+		(1) 填写网络服务名填一个对自己能够起到标示的就可以，换言之随便起吧，只要自己记得住就可以。
+			本地用于表示不同的数据库，而外网则用于作为其他机子连接本机数据库的服务名使用(如第三步);
+		(2) 选择TCP/IP协议然后next;
+		(3) 填写主机名，这里主要是需要填写数据库所在主机的ip，如果是本地则填127.0.0.1即可。
+			也可以访问其他主机的数据库，只要填写对应的主机的ip地址即可。端	口就选择默认的1521。
+	(4) 填写服务名，这个填写自己刚建立的数据库的名称。这里不能随便填，如果是连接其他主机的数据库，
+		需有其他主机数据库准确的网络服务名(第一步中配置的网络服务名作用体现);
+	(5) 测试，点击测试，弹出测试窗口。在测试窗口，点击更改登录，用户名填写system口令就是你在建立数据库的时候填写的
+		那个口令(建立数据库时设置密码需谨慎)。然后确定在测试，填写正确的话，就会看到测试成功的消息。
+	(6) 点击完成。
+二、创建新用户并分配权限：
+	1、使用PL/SQL DEVELOPER登录数据库连接：(进行数据库连接)
+		默认创建好的数据库通过：用户名：system;密码：(创建数据库时设置的密码);
+	2、创建新用户并分配权限：(创建新用户)
+		(1)通过System用户登录后可以看到users这个文件夹，右键新建user，在新用户创建界面中先配置好密码及用户名
+		(2)选择角色权限一栏：在角色中选择：connect 和 resource两项权限即可。
+		此时已完成了角色的创建和分配权限了，然后可以通过用户名密码进行登录。
+		
+三、创建表空间
+	-- 创建表空间   (select * from dba_data_files; -- 查看表空间)
+	create tablespace GANLAN datafile  'D:\APP\ZHANGHONGSEN\ORADATA\GANLAN\GANLAN01.DBF' size 1G;
+	
+	-- 给用户权限
+	GRANT
+	　　CREATE SESSION, CREATE ANY TABLE, CREATE ANY VIEW ,CREATE ANY INDEX, CREATE ANY PROCEDURE,
+	　　ALTER ANY TABLE, ALTER ANY PROCEDURE,
+	　　DROP ANY TABLE, DROP ANY VIEW, DROP ANY INDEX, DROP ANY PROCEDURE,
+	　　SELECT ANY TABLE, INSERT ANY TABLE, UPDATE ANY TABLE, DELETE ANY TABLE,
+		SELECT ANY SEQUENCE, CREATE ANY SEQUENCE,DROP ANY SEQUENCE，create trigger
+	TO GANLAN;
+	
