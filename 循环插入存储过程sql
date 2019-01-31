@@ -1,0 +1,16 @@
+drop procedure ptest;
+create procedure ptest()
+	begin
+	declare num int;
+	set num=30000;
+		while num<45000 do
+	 
+		INSERT INTO t_pro_info
+			(ID, CODE, NAME, TYPE, VOLTAGE_LVl,CREATE_TIME, BUILD_CORP, BUILD_TYPE, ESTIMATE_FEE, ACTUAL_FEE, BUDGET_FEE, SETTLE_FEE, INPUT_TIME, PRO_TYPE, REPORT_FLAG)
+			VALUES
+				(num, num, + num, '10', '35kV', '2017-05-09', '云南省电力公司', '1', num, num, num, num, '2017-05-09', '1', 'true');
+		set num=num+1;
+		end while;
+	end;
+
+call ptest();
