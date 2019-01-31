@@ -1,0 +1,4 @@
+导出指定表
+exp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/orcl file=f:\typical.dmp tables=(SHWZ_TYPICAL_INVENTORY_SPEC,SHWZ_TYPICAL_INVENTORY,SHWZ_TYPICAL_INVENTORY_MODEL);
+导入（DATA_ONLY仅导入数据）
+imp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/orcl file = f:\typical.dmp log = f:\imp_base.log full=y   DATA_ONLY=Y
