@@ -1,0 +1,10 @@
+1、--截取字段
+  --<1> 截取“hello,world”字符串中“,”分隔符之前的字符串
+  SELECT SUBSTR('hello,world', 1, INSTR('hello,world', ',')-1) FROM DUAL;
+  --结果：hello
+  --<2> 截取“hello,world”字符串中“,”分隔符之后的字符串                                 
+  SELECT SUBSTR('hello,world', INSTR('hello,world', ',')+1) FROM DUAL;
+  --结果：world
+  --<3> 截取“hello,world,HH”字符串中第1次出现的“,”字符和第2次出现的“,”字符之间的字符串 
+  SELECT SUBSTR('hello,world,HH', INSTR('hello,world,HH', ',',1)+1, INSTR('hello,world,HH', ',', 2)-1) FROM DUAL;
+  --结果：world
