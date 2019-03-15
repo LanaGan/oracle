@@ -9,3 +9,6 @@
   imp SHWZ_ADMIN/SHWZ_ADMIN@192.168.0.53:1521/orcl file = f:\typical.dmp log = f:\imp_base.log full=y   DATA_ONLY=Y
 
 
+使用plsql工具导入导出
+  导出csv文件；
+  导入csv文件：在工具栏中 TOOLS菜单下 >> text Importer  选择csv文件。在data to oracle页签中指定表用户，和表。指定导入的field数据
