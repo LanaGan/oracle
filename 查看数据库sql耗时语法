@@ -14,6 +14,6 @@ select *
      from v$sqlarea sa
      left join all_users u
       on sa.PARSING_USER_ID = u.user_id
-     where sa.EXECUTIONS > 0 and u.username = 'SHWZ_V25'
+     where sa.EXECUTIONS > 0 and u.username = 'SHWZ_V25' --  u.username是数据库名称
      order by (sa.ELAPSED_TIME / sa.EXECUTIONS) desc)
  where rownum <= 50;
