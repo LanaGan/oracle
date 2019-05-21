@@ -1,0 +1,32 @@
+--创建临时表空间（SHWZ_ADMIN_AP_TEMP）
+CREATE  TEMPORARY  TABLESPACE  SHWZ_ADMIN_AP_TEMP
+                  TEMPFILE  'E:\oracle_db\SHWZ_ADMIN_AP_TEMP.DBF' -- TEMPFILE 文件路径
+                  SIZE  32M
+                  AUTOEXTEND  ON
+                  NEXT  32M  MAXSIZE  UNLIMITED
+                  EXTENT  MANAGEMENT  LOCAL;  
+ 
+--创建表空间
+CREATE  TABLESPACE  SHWZ_ADMIN_AP
+                  LOGGING
+                  DATAFILE  'E:\oracle_db\SHWZ_ADMIN_AP.DBF' - DATAFILE 文件路径
+                  SIZE  32M
+                  AUTOEXTEND  ON
+                  NEXT  32M  MAXSIZE  UNLIMITED
+                  EXTENT  MANAGEMENT  LOCAL;  
+ 
+--建用户
+CREATE USER "SHWZ_ADMIN_AP" PROFILE "DEFAULT" IDENTIFIED BY "SHWZ_ADMIN_AP" 
+DEFAULT TABLESPACE "SHWZ_ADMIN_AP" TEMPORARY TABLESPACE "SHWZ_ADMIN_AP_TEMP" ACCOUNT UNLOCK;
+ 
+--授权
+GRANT "CONNECT" TO "SHWZ_ADMIN_AP";
+GRANT "RESOURCE" TO "SHWZ_ADMIN_AP";
+GRANT "DBA" TO "SHWZ_ADMIN_AP";
+
+--5 修改用户密码
+ （1）运行窗口输入 cmd–右键–以管理员身份运行 
+ （2）输入命令sqlplus /nolog 
+ （3）conn /as sysdba;
+ （4）select username from dba_users;
+ （5）alter user 用户名 identified by 新密码；
